@@ -5,71 +5,123 @@
 <p align="center">
   <a href="https://netflight.bitdate.date/">在线体验</a>
   ·
+  <a href="#演示动图">演示动图</a>
+  ·
+  <a href="#玩法">玩法</a>
+  ·
+  <a href="#操作方式">操作方式</a>
+  ·
   <a href="#本地运行">本地运行</a>
-  ·
-  <a href="#cloudflare-部署">Cloudflare 部署</a>
-  ·
-  <a href="DESIGN.md">设计文档</a>
 </p>
 
 <p align="center">
   <img alt="License" src="https://img.shields.io/badge/license-MIT-2ea44f">
   <img alt="Runtime" src="https://img.shields.io/badge/runtime-Browser-20b2aa">
   <img alt="Render" src="https://img.shields.io/badge/render-Canvas_2D-4f8cff">
-  <img alt="Backend" src="https://img.shields.io/badge/backend-Cloudflare-f38020">
   <img alt="Input" src="https://img.shields.io/badge/input-Keyboard%20%7C%20Touch%20%7C%20Gamepad-7c3aed">
+  <img alt="Leaderboard" src="https://img.shields.io/badge/leaderboard-Top_10-ffd166">
 </p>
 
-**良乡夜航** 是一个以 Online Judge 压力测试为主题的浏览器弹幕生存游戏。玩家驾驶夜航机体穿过弹幕，靠擦弹、Perfect Dash、判题模式和机体改造一路扛到 Boss 压力测试，把成绩打上在线排行榜。
+**良乡夜航** 是一款浏览器弹幕生存游戏：把 Online Judge 的隐藏样例、系统测试和终测压力做成 Boss 战。玩家驾驶夜航机体，在密集弹幕里擦弹、冲刺、开大、升级，最后把自己的用户名打上排行榜。
 
-项目主体是原生 HTML/CSS/JavaScript + Canvas 2D，不需要前端构建链；在线排行榜和房间同步能力使用 Cloudflare Pages Functions、D1 和 Durable Objects 扩展。
+游戏不需要下载安装，打开网页就能玩。它更像一局“刷题压力测试”：样例过了不算结束，真正的危险从隐藏数据开始。
 
-## 演示视频
+## 演示动图
 
 <p align="center">
-  <a href="docs/demo.mp4">
-    <img src="docs/demo-poster.svg" alt="点击观看 Nightflight OJ 演示视频" width="760">
-  </a>
+  <img src="docs/demo.gif" alt="Nightflight OJ gameplay demo" width="760">
 </p>
 
-<p align="center">
-  <a href="docs/demo.mp4">点击播放演示视频</a>
-</p>
+动图展示的是实际游戏画面剪辑：开局弹幕、Perfect Dash、判题模式、Boss 压力测试和排行榜特写。
 
-## 现在能玩什么
+## 玩法
 
-| 模块 | 状态 | 说明 |
+一局游戏的节奏很直接：
+
+1. **自动射击，专注走位。** 机体会持续开火，玩家主要负责躲弹、找安全线和抓冲刺窗口。
+2. **擦弹和 Perfect Dash 充能。** 越贴近危险，越能拿到分数、倍率和判题能量。
+3. **判题模式清屏反打。** 能量满后开大，清除弹幕、削 Boss 血量，并短时间提高火力。
+4. **击破 Boss 或到达分数里程碑后升级。** 每次从随机升级卡中选一张，形成不同构筑路线。
+5. **结算后冲排行榜。** 只用一个用户名保存档案和成绩，不需要学号、密码或额外账号。
+
+## 核心机制
+
+### Perfect Dash
+
+`Shift` 是整局游戏的核心键。冲刺时会获得短暂无敌窗口，能从弹幕缝隙里穿出去。贴近弹幕冲刺会触发 Perfect Dash，奖励分数、倍率和判题能量。
+
+冲刺等级越高，冷却越短，无敌窗口也更宽。高等级冲刺会把游戏从“躲弹”变成“主动贴弹拿收益”。
+
+### 判题模式
+
+判题能量到 100% 后按 `Space` 触发。效果包括：
+
+- 清除当前屏幕上的危险弹幕。
+- 对普通敌人和 Boss 造成伤害。
+- 短时间提升火力，让机体进入爆发输出状态。
+
+它既是保命技能，也是 Boss 战里的爆发窗口。什么时候忍住不放、什么时候果断清屏，是高分的关键。
+
+### Boss 压力测试
+
+Boss 不只是血更厚的敌人，而是不同类型的 OJ 压力：
+
+| Boss | 主题 | 压力 |
 | --- | --- | --- |
-| 单机弹幕生存 | 可玩 | 敌机波次、道具、Boss 阶段、结算和本地档案都已实现 |
-| 在线排行榜 | 可部署 | 一个用户名就是玩家标识，最高分和总积分写入 D1 |
-| 触屏模式 | 可玩 | 支持相对拖动和虚拟摇杆，手指可以放在偏移位置微操，不遮挡自机 |
-| 手柄模式 | 可玩 | 浏览器 Gamepad API，支持摇杆、方向键、面键和肩键 |
-| 联机房间 | 实验性 | 房间 WebSocket、玩家状态广播和双人排行榜接口已包含，可继续扩成完整同步双人 Boss 战 |
-| 宣传视频工具 | 可运行 | Playwright 自动操控真实游戏画面并导出竖屏宣传素材 |
+| 隐藏样例：边界风暴 | 边界条件 | 环形弹幕和空间压缩 |
+| 系统测试：内存漩涡 | 复杂度压力 | 扇形瞄准和节奏变化 |
+| 终测机：红名守门人 | 最终验题 | 螺旋弹和高速点名弹 |
 
-## 游戏亮点
+Boss 血量降低后会进入新 Phase，弹幕形态会变得更激进。击破 Boss 会带来明显的阶段奖励和升级机会。
 
-- **OJ 主题弹幕：** 隐藏样例、系统测试、终测机都变成 Boss 压力测试。
-- **Perfect Dash：** 贴弹冲刺可拿分、叠倍率、充能，风险越高收益越高。
-- **判题模式：** 能量满后触发清屏、削血和短时间火力强化。
-- **Roguelite 改造：** 主炮、引擎、冲刺、协议、生存和 Boss 特化路线可组合。
-- **统一用户名档案：** 不拆账号和 ID，本地档案与排行榜都以同一个用户名识别。
-- **多输入支持：** 键盘、手机触屏、手柄都能完整操作菜单、战斗、暂停和升级选择。
-- **零素材负担：** 音效和背景音乐由 Web Audio 程序化生成，开箱即可跑。
+### 机体改造
+
+升级卡决定一局的打法。当前路线大致分为：
+
+| 路线 | 代表效果 | 风格 |
+| --- | --- | --- |
+| 火力 | 主炮等级、弹道数量、射速 | 更快压掉敌人和 Boss |
+| 机动 | 引擎速度、冲刺等级 | 更细的走位和更高的冲刺收益 |
+| 协议 | 判题模式、护盾收益 | 更强的清屏和容错 |
+| 生存 | 最大生命、回复、护盾 | 更稳地拖到后期 |
+| 技巧 | 擦弹收益、Perfect Dash 收益 | 高风险高回报 |
+
+每次升级只给几张选择，不会把玩家丢进复杂菜单里。读牌、判断局势、选路线，是它的 Roguelite 味道。
+
+## 分数和排行榜
+
+分数来自这些行为：
+
+- 存活时间。
+- 击杀敌人和伤害 Boss。
+- 拾取道具。
+- 擦弹。
+- Perfect Dash 连段。
+- 判题模式清屏。
+
+排行榜只显示用户名和成绩摘要。玩家下次输入同一个用户名，就会继续使用这个身份记录成绩。
 
 ## 操作方式
 
 | 动作 | 键盘 | 手机触屏 | 手柄 |
 | --- | --- | --- | --- |
-| 移动 | `WASD` / 方向键 | 相对拖动 / 左侧虚拟摇杆 | 左摇杆 / D-pad |
+| 移动 | `WASD` / 方向键 | 相对拖动 / 虚拟摇杆 | 左摇杆 / D-pad |
 | 冲刺 | `Shift` | `D` 按钮 | `B` / 肩键 |
 | 判题模式 | `Space` | `OJ` 按钮 | 面键 |
 | 暂停 | `P` / `Esc` | `P` 按钮 | Start / Menu |
 | 升级选择 | 方向键 + `Enter` / `Space` | 点击卡片 | D-pad + 面键 |
 
+手机端支持“手指在别处微操”的相对拖动方式，不需要把手指压在自机上。这样弹幕密集时不会挡住判定点。
+
+## 适合谁玩
+
+- 喜欢弹幕游戏、躲避游戏、滚动类反应游戏的玩家。
+- 喜欢刷排行榜、研究构筑和冲高分的人。
+- 被 OJ 隐藏样例折磨过，但还想笑着再来一局的人。
+
 ## 本地运行
 
-最简单的方式是直接打开 `index.html`。如果浏览器限制本地接口或你想模拟线上路径，用静态服务器启动：
+直接打开 `index.html` 即可运行。也可以启动一个本地静态服务器：
 
 ```powershell
 python -m http.server 8000
@@ -81,104 +133,11 @@ python -m http.server 8000
 http://localhost:8000/
 ```
 
-Windows 下也可以双击 `run_game.bat` 快速启动。
+Windows 下可以双击 `run_game.bat` 快速启动。
 
-## 分数与成长
+## 开源说明
 
-分数来自生存时间、击杀、Boss 伤害、道具拾取、擦弹和 Perfect Dash 连段。达到这些里程碑会触发机体改造：
-
-```text
-9000 -> 22000 -> 42000 -> 70000 -> 108000 -> 158000 -> 225000
-```
-
-本地档案保存在 `localStorage`。玩家只需要一个用户名；下次输入同一用户名会读取该 ID 的本地档案，并在部署了排行榜 API 时尝试同步云端档案。
-
-## 项目结构
-
-```text
-.
-|-- index.html                 # 游戏页面入口
-|-- run_game.bat               # Windows 快速启动脚本
-|-- db/
-|   `-- schema.sql             # Cloudflare D1 排行榜表结构
-|-- functions/
-|   `-- api/                   # Cloudflare Pages Functions
-|-- worker/
-|   `-- room-worker.js         # Durable Object 房间服务
-|-- src/
-|   |-- audio.js               # Web Audio 音乐和音效
-|   |-- content.js             # 段位、Boss、升级卡配置
-|   |-- game.js                # Canvas 2D 游戏主循环
-|   |-- leaderboard.js         # 排行榜客户端
-|   |-- profile.js             # 用户名档案和 localStorage
-|   `-- styles.css             # 响应式 UI、触屏和手柄提示
-|-- tools/
-|   |-- make-marketing-promo-mp4.mjs
-|   |-- make-marketing-promo.mjs
-|   |-- make-marketing-cover.mjs
-|   |-- make-promo-video.mjs
-|   `-- make-promo-cover.mjs
-`-- docs/
-    |-- banner.svg             # README 横幅
-    |-- demo-poster.svg        # 演示视频预览图
-    |-- demo.mp4               # 演示视频
-    `-- cover.png              # 历史宣传封面
-```
-
-## Cloudflare 部署
-
-仓库提供了 Cloudflare 配置模板：
-
-```powershell
-Copy-Item wrangler.example.toml wrangler.toml
-```
-
-然后把 `wrangler.toml` 里的 `REPLACE_WITH_YOUR_D1_DATABASE_ID` 替换成自己的 D1 database ID。真实的 `wrangler*.toml` 默认被 `.gitignore` 忽略，避免把账号、数据库和部署配置提交到公开仓库。
-
-初始化 D1 表结构：
-
-```powershell
-npx wrangler d1 execute nightflight_leaderboard --file db/schema.sql
-```
-
-包含的线上接口：
-
-| 路径 | 用途 |
-| --- | --- |
-| `GET /api/leaderboard` | 读取单人 Top 10 和指定用户名档案 |
-| `POST /api/leaderboard` | 提交单人成绩 |
-| `GET /api/duo-leaderboard` | 读取双人榜 |
-| `POST /api/duo-leaderboard` | 提交双人成绩 |
-| `GET /api/room/:room` | WebSocket 房间入口 |
-
-Pages/Workers 的具体发布方式取决于你的 Cloudflare 项目设置。建议把真实配置留在本机或 Cloudflare 控制台，不要提交到 GitHub。
-
-## 宣传视频工具
-
-宣传素材脚本在 `tools/` 目录里。生成竖屏 MP4：
-
-```powershell
-npm install
-npm run promo:mp4
-```
-
-脚本会用 Playwright 打开游戏、操控真实游戏画面、切换排行榜/触屏/手柄等功能特写，并通过浏览器 `MediaRecorder` 导出视频。
-
-如果想指定本机浏览器：
-
-```powershell
-$env:BROWSER_PATH = "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
-npm run promo:mp4
-```
-
-生成内容默认输出到 `promo-output/`，该目录不会进入 git。
-
-## 开发说明
-
-- 游戏本体不需要 `npm install`，浏览器能打开就能玩。
-- `npm install` 只用于 Cloudflare CLI、静态服务器和宣传视频脚本。
-- 线上配置、部署产物、录屏产物和 Playwright 检查输出都已在 `.gitignore` 中排除。
-- 主要玩法参数集中在 `src/content.js`，手感、同步、碰撞和绘制逻辑集中在 `src/game.js`。
+游戏主体使用原生 HTML、CSS、JavaScript 和 Canvas 2D 编写，音乐与音效由浏览器 Web Audio 生成。欢迎基于本项目继续做新 Boss、新升级卡、新皮肤或新的排行榜玩法。
 
 ## License
 

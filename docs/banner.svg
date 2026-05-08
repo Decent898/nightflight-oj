@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 420" role="img" aria-labelledby="title desc">
+  <title id="title">Nightflight OJ / 良乡夜航</title>
+  <desc id="desc">Wide GitHub banner for the Nightflight OJ browser bullet-hell game.</desc>
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#050914"/>
+      <stop offset=".52" stop-color="#0b1d2a"/>
+      <stop offset="1" stop-color="#09101f"/>
+    </linearGradient>
+    <radialGradient id="core" cx="50%" cy="45%" r="58%">
+      <stop offset="0" stop-color="#16364a"/>
+      <stop offset=".48" stop-color="#071725" stop-opacity=".78"/>
+      <stop offset="1" stop-color="#04070e" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="glow" x="-70%" y="-70%" width="240%" height="240%">
+      <feGaussianBlur stdDeviation="9" result="blur"/>
+      <feColorMatrix in="blur" type="matrix" values="0 0 0 0 0.301 0 0 0 0 0.906 0 0 0 0 1 0 0 0 .7 0"/>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="softShadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="0" dy="18" stdDeviation="22" flood-color="#000814" flood-opacity=".55"/>
+    </filter>
+    <pattern id="stars" width="120" height="120" patternUnits="userSpaceOnUse">
+      <circle cx="18" cy="26" r="1.4" fill="#e9f7ff" opacity=".45"/>
+      <circle cx="92" cy="18" r="1.1" fill="#7df5ff" opacity=".42"/>
+      <circle cx="64" cy="86" r="1.3" fill="#fff2b8" opacity=".34"/>
+      <circle cx="112" cy="104" r=".9" fill="#e9f7ff" opacity=".35"/>
+    </pattern>
+  </defs>
+
+  <rect width="1600" height="420" rx="34" fill="url(#sky)"/>
+  <rect width="1600" height="420" rx="34" fill="url(#core)"/>
+  <rect width="1600" height="420" rx="34" fill="url(#stars)" opacity=".75"/>
+
+  <g opacity=".28" stroke="#2bd8ff" stroke-width="2">
+    <path d="M120 -20 58 440"/>
+    <path d="M310 -20 248 440"/>
+    <path d="M500 -20 438 440"/>
+    <path d="M690 -20 628 440"/>
+    <path d="M880 -20 818 440"/>
+    <path d="M1070 -20 1008 440"/>
+    <path d="M1260 -20 1198 440"/>
+    <path d="M1450 -20 1388 440"/>
+  </g>
+
+  <g opacity=".92">
+    <path d="M85 105h68" stroke="#ffd166" stroke-width="10" stroke-linecap="round"/>
+    <path d="M150 185h68" stroke="#ffd166" stroke-width="10" stroke-linecap="round"/>
+    <path d="M96 268h68" stroke="#ffd166" stroke-width="10" stroke-linecap="round"/>
+    <path d="M1424 98h68" stroke="#ffd166" stroke-width="10" stroke-linecap="round"/>
+    <path d="M1366 188h68" stroke="#ffd166" stroke-width="10" stroke-linecap="round"/>
+    <path d="M1465 282h68" stroke="#ffd166" stroke-width="10" stroke-linecap="round"/>
+  </g>
+
+  <g filter="url(#softShadow)">
+    <circle cx="800" cy="188" r="96" fill="#06111f" stroke="#4de7ff" stroke-width="4"/>
+    <circle cx="800" cy="188" r="76" fill="none" stroke="#ffd166" stroke-width="3" opacity=".7"/>
+    <path d="M800 96 842 255 800 232 758 255Z" fill="#eef5ff"/>
+    <path d="M800 96 842 255 800 232Z" fill="#9aadc2"/>
+    <circle cx="800" cy="184" r="17" fill="#4de7ff" filter="url(#glow)"/>
+    <path d="M742 284c38 27 78 27 116 0" fill="none" stroke="#4de7ff" stroke-width="5" stroke-linecap="round" opacity=".82"/>
+  </g>
+
+  <g text-anchor="middle" font-family="Inter, Segoe UI, Microsoft YaHei, Noto Sans SC, Arial, sans-serif">
+    <text x="800" y="51" fill="#7df5ff" font-size="22" font-weight="800" letter-spacing="7">ONLINE JUDGE NIGHT ROUTE</text>
+    <text x="800" y="342" fill="#eef5ff" font-size="62" font-weight="900">Nightflight OJ</text>
+    <text x="800" y="386" fill="#4de7ff" font-size="34" font-weight="900">良乡夜航</text>
+  </g>
+
+  <g font-family="Inter, Segoe UI, Microsoft YaHei, Noto Sans SC, Arial, sans-serif" font-weight="800">
+    <rect x="236" y="286" width="192" height="48" rx="24" fill="#071421" stroke="#4de7ff" stroke-opacity=".45"/>
+    <text x="332" y="318" fill="#7df5ff" font-size="20" text-anchor="middle">Bullet Hell</text>
+    <rect x="1172" y="286" width="192" height="48" rx="24" fill="#071421" stroke="#79ff9d" stroke-opacity=".45"/>
+    <text x="1268" y="318" fill="#79ff9d" font-size="20" text-anchor="middle">Leaderboard</text>
+  </g>
+
+  <rect x="1.5" y="1.5" width="1597" height="417" rx="32" fill="none" stroke="#27384c" stroke-width="3"/>
+</svg>

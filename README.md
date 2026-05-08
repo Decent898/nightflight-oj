@@ -1,8 +1,6 @@
 # Nightflight OJ / 良乡夜航
 
-<p align="center">
-  <img src="docs/cover.png" alt="Nightflight OJ cover" width="920">
-</p>
+![Nightflight OJ banner](docs/banner.svg)
 
 <p align="center">
   <a href="https://netflight.bitdate.date/">在线体验</a>
@@ -25,6 +23,18 @@
 **良乡夜航** 是一个以 Online Judge 压力测试为主题的浏览器弹幕生存游戏。玩家驾驶夜航机体穿过弹幕，靠擦弹、Perfect Dash、判题模式和机体改造一路扛到 Boss 压力测试，把成绩打上在线排行榜。
 
 项目主体是原生 HTML/CSS/JavaScript + Canvas 2D，不需要前端构建链；在线排行榜和房间同步能力使用 Cloudflare Pages Functions、D1 和 Durable Objects 扩展。
+
+## 演示视频
+
+<p align="center">
+  <a href="docs/demo.mp4">
+    <img src="docs/demo-poster.svg" alt="点击观看 Nightflight OJ 演示视频" width="760">
+  </a>
+</p>
+
+<p align="center">
+  <a href="docs/demo.mp4">点击播放演示视频</a>
+</p>
 
 ## 现在能玩什么
 
@@ -109,7 +119,10 @@ Windows 下也可以双击 `run_game.bat` 快速启动。
 |   |-- make-promo-video.mjs
 |   `-- make-promo-cover.mjs
 `-- docs/
-    `-- cover.png              # README 封面图
+    |-- banner.svg             # README 横幅
+    |-- demo-poster.svg        # 演示视频预览图
+    |-- demo.mp4               # 演示视频
+    `-- cover.png              # 历史宣传封面
 ```
 
 ## Cloudflare 部署

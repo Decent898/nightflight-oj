@@ -1,0 +1,20 @@
+{
+  "name": "nightflight-oj",
+  "version": "1.0.0",
+  "private": false,
+  "type": "module",
+  "description": "Browser bullet-hell survival game themed around Online Judge pressure tests.",
+  "scripts": {
+    "serve": "npx http-server . -p 8000",
+    "promo:mp4": "node tools/make-marketing-promo-mp4.mjs",
+    "promo:webm": "node tools/make-marketing-promo.mjs",
+    "promo:cover": "node tools/make-marketing-cover.mjs"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.52.0",
+    "http-server": "^14.1.1",
+    "playwright": "^1.52.0",
+    "wrangler": "^4.14.0"
+  }
+}
+

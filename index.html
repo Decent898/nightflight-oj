@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>良乡夜航：Online Judge</title>
+  <link rel="stylesheet" href="src/styles.css?v=20260506-oldui-inputfix">
+</head>
+<body>
+  <main class="shell">
+    <section class="game-stage" aria-label="良乡夜航弹幕游戏">
+      <canvas id="game" width="1180" height="760"></canvas>
+
+      <div class="overlay top">
+        <div class="title-lockup">
+          <div class="mark">OJ</div>
+          <div>
+            <h1>良乡夜航</h1>
+            <p id="phaseText">Online Judge 弹幕生存</p>
+          </div>
+        </div>
+        <div class="scorebox">
+          <span>分数</span>
+          <strong id="score">0</strong>
+        </div>
+      </div>
+
+      <div class="bossbar hidden" id="bossbar">
+        <div>
+          <span id="bossName">隐藏样例</span>
+          <strong id="bossPhase">Phase 1</strong>
+        </div>
+        <i id="bossFill"></i>
+      </div>
+
+      <div class="overlay bottom">
+        <div class="meter-group">
+          <div class="meter-label">
+            <span>判题能量</span>
+            <strong id="energyText">0%</strong>
+          </div>
+          <div class="meter"><i id="energyFill"></i></div>
+        </div>
+        <div class="quick-stats">
+          <div><span>生命</span><strong id="life">3</strong></div>
+          <div><span>护盾</span><strong id="shield">0.0s</strong></div>
+          <div><span>倍率</span><strong id="combo">1.0x</strong></div>
+          <div><span>时间</span><strong id="time">00:00</strong></div>
+        </div>
+      </div>
+
+      <div class="center-layer">
+        <article class="dialog" id="menu">
+          <h2>进入良乡夜航</h2>
+          <p>这不是一局结束的小游戏，而是一台会成长的判题机。冲刺穿弹、收集 OJ 道具、击败隐藏样例 Boss，把你的账号段位从入门题刷到红名。</p>
+          <label class="field">
+            <span>本地账号</span>
+            <input id="pilotName" maxlength="16" autocomplete="off" placeholder="BITer">
+          </label>
+          <div class="profile-card">
+            <b id="menuRank">Unrated</b>
+            <span id="menuBest">最高分 0</span>
+          </div>
+          <div class="keygrid">
+            <span>WASD / 方向键</span><b>移动</b>
+            <span>Shift</span><b>冲刺无敌帧</b>
+            <span>Space</span><b>判题模式</b>
+            <span>P / Esc</span><b>暂停</b>
+          </div>
+          <button id="start">开始夜航</button>
+        </article>
+
+        <article class="dialog upgrade hidden" id="upgrade">
+          <h2>机体改造</h2>
+          <p id="upgradeIntro">通过本轮压力测试，选择一个模块升级。</p>
+          <div class="upgrade-list" id="upgradeList"></div>
+        </article>
+
+        <article class="dialog story hidden" id="story">
+          <p class="speaker" id="storySpeaker">OJ Core</p>
+          <h2 id="storyTitle">突发事件</h2>
+          <p id="storyText">新的压力测试正在接近。</p>
+          <button id="storyNext">进入压力测试</button>
+        </article>
+
+        <article class="dialog hidden" id="pause">
+          <h2>已暂停</h2>
+          <p>夜色不会催你，准备好再继续。</p>
+          <button id="resume">继续</button>
+        </article>
+
+        <article class="dialog hidden" id="over">
+          <h2>本轮结算</h2>
+          <p id="result"></p>
+          <button id="again">再来一局</button>
+        </article>
+      </div>
+    </section>
+
+    <aside class="side-panel">
+      <h2>账号</h2>
+      <div class="rank-card">
+        <strong id="rankName">Unrated</strong>
+        <span id="rankHint">本地档案</span>
+        <i id="rankProgress"></i>
+      </div>
+      <div class="panel-row"><span>飞行员</span><strong id="pilotView">BITer</strong></div>
+      <div class="panel-row"><span>最高分</span><strong id="bestScore">0</strong></div>
+      <div class="panel-row"><span>总积分</span><strong id="totalScore">0</strong></div>
+
+      <h2>机体</h2>
+      <div class="panel-row"><span>主炮</span><strong id="gunLevel">Lv.1</strong></div>
+      <div class="panel-row"><span>引擎</span><strong id="engineLevel">Lv.1</strong></div>
+      <div class="panel-row"><span>冲刺</span><strong id="dashLevel">Lv.1</strong></div>
+      <div class="panel-row"><span>协议</span><strong id="protocolLevel">Lv.1</strong></div>
+
+      <h2>改造池</h2>
+      <ul class="item-list compact">
+        <li><b>火力</b><span>主炮 / 流水线</span></li>
+        <li><b>机动</b><span>引擎 / 冲刺</span></li>
+        <li><b>生存</b><span>护盾 / 回滚</span></li>
+        <li><b>Boss</b><span>协议 / 破解器</span></li>
+      </ul>
+
+      <h2>状态</h2>
+      <div class="panel-row"><span>当前道具</span><strong id="itemName">无</strong></div>
+      <div class="panel-row"><span>冲刺冷却</span><strong id="dash">就绪</strong></div>
+      <div class="panel-row"><span>完美冲刺</span><strong id="dashScore">0</strong></div>
+      <div class="panel-row"><span>擦弹</span><strong id="graze">0</strong></div>
+
+      <h2>联机蓝图</h2>
+      <p class="note">校园网版本建议用一台同学电脑启动 WebSocket 房间，客户端只同步输入、随机种子和结算签名。当前版本已把账号、内容表和运行时拆开，方便接入双人协同 Boss 战。</p>
+    </aside>
+  </main>
+
+  <script src="src/content.js?v=20260506-oldui-inputfix"></script>
+  <script src="src/profile.js?v=20260506-oldui-inputfix"></script>
+  <script src="src/audio.js?v=20260506-oldui-inputfix"></script>
+  <script src="src/leaderboard.js?v=20260506-oldui-inputfix"></script>
+  <script src="src/game.js?v=20260506-oldui-inputfix"></script>
+</body>
+</html>
